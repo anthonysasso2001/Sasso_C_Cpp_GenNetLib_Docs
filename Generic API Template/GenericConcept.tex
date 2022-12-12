@@ -1,0 +1,134 @@
+\documentclass{article}
+
+%   included packages
+\usepackage[a4paper,margin = 14mm]{geometry} %0.5 inch margins a4 paper
+\usepackage{amsmath}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype}
+\usepackage{titling}
+
+%   footer, to show license information, specifying that data is CC-BY-4.0 BUT non documentation code snippets are GPL3 to unify with main project lisencing.
+\usepackage{fancyhdr}
+% set page style to fancy reset and disable header and footer, then allocate footer type
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\fancyfoot[R]{\thepage}
+\fancyfoot[C]{\textbf{Documentation licensed under CC-BY-4.0, code \& software examples licensed under GNU GPLv3.}}
+
+%   Allows me to use hyperlinks for table of contents etc.
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    linktoc     =   all,
+    colorlinks,
+    citecolor   =   black,
+    filecolor   =   black,
+    linkcolor   =   black,
+    urlcolor    =   blue
+}
+
+%   Setting up the code examples
+% \usepackage{listings}
+
+
+% \definecolor  {dkgreen}   {rgb}   {0,0.6,0}
+% \definecolor  {gray}      {rgb}   {0.5,0.5,0.5}
+% \definecolor  {mauve}     {rgb}   {0.58,0,0.82}
+
+% \lstset{
+%   frame               =   tb,
+%   language            =   C++,
+%   aboveskip           =   3mm,
+%   belowskip           =   3mm,
+%   showstringspaces    =   false,
+%   columns             =   flexible,
+%   basicstyle          =   {\small\ttfamily},
+%   numbers             =   none,
+%   numberstyle         =   \tiny\color{gray},
+%   keywordstyle        =   \color{blue},
+%   commentstyle        =   \color{dkgreen},
+%   stringstyle         =   \color{mauve},
+%   breaklines          =   true,
+%   breakatwhitespace   =   true,
+%   tabsize             =   3
+% }
+
+%   formatting for document
+
+%   Push everything to the left cause I think it looks cleaner
+\preauthor  {\begin{flushleft}}
+\postauthor {\end{flushleft}}
+\predate    {\begin{flushleft}}
+\postdate   {\end{flushleft}}    
+\setcounter {secnumdepth}{0}
+
+%   Document Title & author
+\title      {\Huge Generic Concept \& Project Philosophy}
+\author     {By: Anthony Sasso}
+
+%   updates date for each compile, that way this + versioning tells reader which they are reading?
+\date       {\today}
+
+%   no indents for paragraphs (change depending on doc type)
+% \setlength  {\parindent}    {0pt}
+
+%   custom commands / formatting shortcuts
+%   combine bold & italic
+\newcommand{\textbfit}[1]{\textbf{\textit{#1}}} 
+
+%   footnote with label, colour, and inputted text... then sets back to default
+% \newcommand{\clfootnote}[3]{\color{#2}{\footnote{\label{#1}{ \color{#2}{#3}}}}\color{defaultcolor}} 
+
+%   set to defualt colour (black)
+\AtBeginDocument    {\colorlet{defaultcolor}{.}}
+
+%   writing goes here
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Introduction}
+Overall there are a few goals with this project. First is to enable me to use some design pattern, networking, security courses to develop a project I would likely use in the future. Another is due to how annoying/disparate networking can be with C/C++ having a preset skeleton to then build on could significantly reduce the overhead. This would also hopefully be without requiring added complexities from things like Boost, QT, etc. which many not want as dependencies in their projects.
+
+There are also some requirements listed before the development of the official requirement matrix, currently nothing present here will limit future developments unless implicitly implemented within such a requirement document as needed.
+
+\section{General API Concept \& Pseudo Requirements}
+The API as I have imagined it will consist of a few principles to be used for both the style \& architecture of the project.
+\begin{enumerate}
+    \item \textbf{Packet API General structure.}
+
+    The packet API will be a template Packet with sub-templated datatype for each element to assist in its creation \& use. The packet itself will consist of no more (but optionally less in the form of allocating a nullified pointer to \textit{``TailData'' or ``CheckValue''} when needed) than the elements: \textit{``HeaderData''}, \textit{``DataBuffer''}, \textit{``TailData''}, \textit{``CheckValue''}, and \textit{``SizeLimit''}. The final value of SizeLimit should also not be allocated manually instead using a predefined setter within the template aggregating a getMaxSize() function from each of the mentioned elements into a constant unsigned value.
+
+    \item \textbf{HeaderData \& Struct Linking.}
+
+    A separate .h/.hpp file including the struct contained within \textit{``DataBuffer''} should be expected to exist on each side of the network in the form of a file named \textit{``DataBufferStructures.h/.hpp''} which will define the DataBuffer overloads for each struct. Optionally this file may also exist as a linker for other, sub headers in the form of \textit{``StructName\_DataBuffer.h/.hpp''} and then pointed to using \textit{``DataBufferStructures''} as a reference of sorts.
+
+    The API should expect a HeaderData class of the minimum elements:
+    \begin{enumerate}
+        \item \textit{sendIP}: This element will denote the sender IP as a 32-bit unsigned integer.
+        \item \textit{recvIP}: This element will denote the receiver IP as a 32-bit unsigned integer.
+        \item \textit{commPort}: This element will denote the operating port for the packer for checking connection authenticity.
+        \item \textit{dataSize}: This element will denote the size of the DataBuffer present in this packet.
+        \item \textit{tailSize}: This element will denote the size of the TailData present in this packet.
+        \item \textit{checkValSize}: This element will denote the size of the CheckValue present in this packet.
+        \item \textit{dataPos}: This element will denote the data position of this packet in the case of multi-packet transfers, otherwise set to 0 to denote a control packet/singular transfer.
+        \item \textit{flagBArrSize}: This element will denote the size in bytes of the following flag binary array (for use of bit masked flag allocation), otherwise set to 0 should no flags be present.
+        \item \textit{flagBArr}: This element will denote the binary array for all flags within the header, otherwise set to NULL along with flagBArrSize set to zero should no flags be present.
+    \end{enumerate}
+
+    \item \textbf{DataBuffer Element.}
+    
+    The API should expect itemized buffers in the form of a class template of type \textit{``DataBuffer''} which implementations can input a struct into, and overload four main functions, of \textit{``Serialize''}, \textit{``Deserialize''}, \textit{``DataBuffer(struct, segmentSizes [])''} (segmentSizes will be an unsigned array, denoting the size of each structure element in bytes), and \textit{``DataBuffer(individual elem, \dots)''}; the final two of which will be intentionally made redundant to allow both raw and buffer allocation for the data field.
+    
+    \item \textbf{TailData \& CheckValue Elements.}
+    
+    The Elements of \textit{``TailData'' and ``CheckValue''} are optional but a CRC will be implemented within the template to avoid re-implementation. By Default \textit{CheckValue} will operate as an automatic 64bit CRC with overloaded implementations  for hash, or data-repair with \textit{TailData}.
+    
+\end{enumerate}
+
+\end{document}

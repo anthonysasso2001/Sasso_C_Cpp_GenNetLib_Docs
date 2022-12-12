@@ -1,0 +1,9 @@
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QSeparate documentations for SassoCCppGenNetLib intended to be included as a submodule or similar to help segregate the code better.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QSassoCCppGenNetLib Documentation By: Anthony Sasso\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qsecnumdepth 0\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QSassoCCppGenNetLib By: Anthony Sasso\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QOptionally this header may also exist as a linker for other, sub headers in the form of “StructNameDataBuffer.h/.hpp” and then pointed to using “DataBufferStructures” as a reference of sorts.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QA seperate header including the struct contained within “DataBuffer” should be expected to exist on each side of the network in the form of a file named “DataBufferStructures.h/.hpp” which will define the DataBuffer overloads for each struct.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QA separate .h/.hpp file including the struct contained within “DataBuffer” should be expected to exist on each side of the network in the form of a file named “DataBufferStructures.h/.hpp” which will define the DataBuffer overloads for each struct.\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QA separate .h/.hpp file including the struct contained within “DataBuffer” should be expected to exist on each side of the network in the form of a file named “DataBufferStructures.h/.hpp” which will define the DataBuffer overloads for each struct.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_CA","sentence":"^\\QOptionally this file may also exist as a linker for other, sub headers in the form of “StructNameDataBuffer.h/.hpp” and then pointed to using “DataBufferStructures” as a reference of sorts.\\E$"}
