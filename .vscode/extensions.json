@@ -1,0 +1,13 @@
+//  Default Extensions for this service, to enable development & testing with more consistency
+
+{
+	"recommendations": [
+		"James-Yu.latex-workshop",
+		"valentjn.vscode-ltex",
+		"DavidAnson.vscode-markdownlint",
+		"PKief.markdown-checkbox",
+		"GrapeCity.gc-excelviewer",
+		"eamodio.gitlens",
+		"felipecaputo.git-project-manager",
+	]
+}
