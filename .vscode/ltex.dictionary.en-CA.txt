@@ -18,3 +18,7 @@ flagBArr
 tailSize
 checkValSize
 dataPos
+checkFlag
+numOfElem
+NetworkManager
+SocketData

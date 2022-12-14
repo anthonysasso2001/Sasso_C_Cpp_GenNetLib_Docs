@@ -21,12 +21,12 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 \hypersetup{
-    linktoc     =   all,
-    colorlinks,
-    citecolor   =   black,
-    filecolor   =   black,
-    linkcolor   =   black,
-    urlcolor    =   blue
+	linktoc     =   all,
+	colorlinks,
+	citecolor   =   black,
+	filecolor   =   black,
+	linkcolor   =   black,
+	urlcolor    =   blue
 }
 
 %   Setting up the code examples
@@ -98,37 +98,74 @@ Overall there are a few goals with this project. First is to enable me to use so
 There are also some requirements listed before the development of the official requirement matrix, currently nothing present here will limit future developments unless implicitly implemented within such a requirement document as needed.
 
 \section{General API Concept \& Pseudo Requirements}
+
 The API as I have imagined it will consist of a few principles to be used for both the style \& architecture of the project.
 \begin{enumerate}
-    \item \textbf{Packet API General structure.}
+	\item \textbf{Packet API General structure.}
 
-    The packet API will be a template Packet with sub-templated datatype for each element to assist in its creation \& use. The packet itself will consist of no more (but optionally less in the form of allocating a nullified pointer to \textit{``TailData'' or ``CheckValue''} when needed) than the elements: \textit{``HeaderData''}, \textit{``DataBuffer''}, \textit{``TailData''}, \textit{``CheckValue''}, and \textit{``SizeLimit''}. The final value of SizeLimit should also not be allocated manually instead using a predefined setter within the template aggregating a getMaxSize() function from each of the mentioned elements into a constant unsigned value.
+	      The packet API will be a template Packet with sub-templated datatype for each element to assist in its creation \& use. The packet itself will consist of no more (but optionally less in the form of allocating a nullified pointer to \textit{``TailData'' or ``CheckValue''} when needed) than the elements: \textit{``HeaderData''}, \textit{``DataBuffer''}, \textit{``TailData''}, \textit{``CheckValue''}, and \textit{``SizeLimit''}. The final value of SizeLimit should also not be allocated manually instead using a predefined setter within the template aggregating a getMaxSize() function from each of the mentioned elements into a constant unsigned value.
 
-    \item \textbf{HeaderData \& Struct Linking.}
+	\item \textbf{HeaderData \& Struct Linking.}
 
-    A separate .h/.hpp file including the struct contained within \textit{``DataBuffer''} should be expected to exist on each side of the network in the form of a file named \textit{``DataBufferStructures.h/.hpp''} which will define the DataBuffer overloads for each struct. Optionally this file may also exist as a linker for other, sub headers in the form of \textit{``StructName\_DataBuffer.h/.hpp''} and then pointed to using \textit{``DataBufferStructures''} as a reference of sorts.
+	      A separate .h/.hpp file including the struct contained within \textit{``DataBuffer''} should be expected to exist on each side of the network in the form of a file named \textit{``DataBufferStructures.h/.hpp''} which will define the DataBuffer overloads for each struct. Optionally this file may also exist as a linker for other, sub headers in the form of \textit{``StructName\_DataBuffer.h/.hpp''} and then pointed to using \textit{``DataBufferStructures''} as a reference of sorts.
 
-    The API should expect a HeaderData class of the minimum elements:
-    \begin{enumerate}
-        \item \textit{sendIP}: This element will denote the sender IP as a 32-bit unsigned integer.
-        \item \textit{recvIP}: This element will denote the receiver IP as a 32-bit unsigned integer.
-        \item \textit{commPort}: This element will denote the operating port for the packer for checking connection authenticity.
-        \item \textit{dataSize}: This element will denote the size of the DataBuffer present in this packet.
-        \item \textit{tailSize}: This element will denote the size of the TailData present in this packet.
-        \item \textit{checkValSize}: This element will denote the size of the CheckValue present in this packet.
-        \item \textit{dataPos}: This element will denote the data position of this packet in the case of multi-packet transfers, otherwise set to 0 to denote a control packet/singular transfer.
-        \item \textit{flagBArrSize}: This element will denote the size in bytes of the following flag binary array (for use of bit masked flag allocation), otherwise set to 0 should no flags be present.
-        \item \textit{flagBArr}: This element will denote the binary array for all flags within the header, otherwise set to NULL along with flagBArrSize set to zero should no flags be present.
-    \end{enumerate}
+	      The API should expect a HeaderData class of the minimum elements:
+	      \begin{enumerate}
+		      \item \textit{sendIP}: This element will denote the sender IP as a 32-bit unsigned integer.
+		      \item \textit{recvIP}: This element will denote the receiver IP as a 32-bit unsigned integer.
+		      \item \textit{commPort}: This element will denote the operating port for the packer for checking connection authenticity.
+		      \item \textit{dataSize}: This element will denote the size of the DataBuffer present in this packet.
+		      \item \textit{tailSize}: This element will denote the size of the TailData present in this packet.
+		      \item \textit{checkValSize}: This element will denote the size of the CheckValue present in this packet.
+		      \item \textit{dataPos}: This element will denote the data position of this packet in the case of multi-packet transfers, otherwise set to 0 to denote a control packet/singular transfer.
+		      \item \textit{flagBArrSize}: This element will denote the size in bytes of the following flag binary array (for use of bit masked flag allocation), otherwise set to 0 should no flags be present.
+		      \item \textit{flagBArr}: This element will denote the binary array for all flags within the header, otherwise set to NULL along with flagBArrSize set to zero should no flags be present.
+	      \end{enumerate}
 
-    \item \textbf{DataBuffer Element.}
-    
-    The API should expect itemized buffers in the form of a class template of type \textit{``DataBuffer''} which implementations can input a struct into, and overload four main functions, of \textit{``Serialize''}, \textit{``Deserialize''}, \textit{``DataBuffer(struct, segmentSizes [])''} (segmentSizes will be an unsigned array, denoting the size of each structure element in bytes), and \textit{``DataBuffer(individual elem, \dots)''}; the final two of which will be intentionally made redundant to allow both raw and buffer allocation for the data field.
-    
-    \item \textbf{TailData \& CheckValue Elements.}
-    
-    The Elements of \textit{``TailData'' and ``CheckValue''} are optional but a CRC will be implemented within the template to avoid re-implementation. By Default \textit{CheckValue} will operate as an automatic 64bit CRC with overloaded implementations  for hash, or data-repair with \textit{TailData}.
-    
+	      In addition to the mentioned elements, it may be warranted to implement functions callable by the header class. The basic options would be a Constructor with a buffer/struct \& individual element overloads. The header may also the use of a ``check compatibility'' function which checks the flagBArr element and returns an enumeration array for each value, but it may instead be simpler to use a \textit{``checkFlag(boolean* values, int numOfElem)''} function the is then filled with the flagBArr data (the first value in the boolean array corresponding to the most significant bit in the binary array).
+
+
+	\item \textbf{DataBuffer Element.}
+
+	      The API should expect itemized buffers in the form of a class template of type \textit{``DataBuffer''} which implementations can input a struct into, and overload four main functions. These functions will be \textit{``Serialize''}, \textit{``Deserialize''}, \textit{``DataBuffer(struct, segmentSizes [])''} (segmentSizes will be an unsigned array, denoting the size of each structure element in bytes), and \textit{``DataBuffer(individual elem, \dots)''}; the final two of which will be intentionally made redundant to allow both raw and buffer allocation for the data field.
+
+	\item \textbf{TailData \& CheckValue Elements.}
+
+	      The Elements of \textit{``TailData'' and ``CheckValue''} are optional but a CRC will be implemented within the template to avoid re-implementation. By Default \textit{CheckValue} will operate as an automatic 64bit CRC with overloaded implementations  for hash, or data-repair with \textit{TailData}.
+
+	      Overall it may be warranted to embed the CheckValue class within TailData as it does cover similar functionality. This will be decided during the requirements phase as it could still be warranted to have them separate to reduce each classes scope.
+
 \end{enumerate}
 
+\section{NetworkManager Controller}
+
+In addition to the previous mentioned Packet, there will be a controller to create sockets \& connections in detached threads, generate \& send packets, and close either specific connections, sockets, or all connections.
+
+The general functionality and elements will likely be as follows:
+
+\begin{enumerate}
+	\item \textbf{Elements}
+
+	      The elements within this class will be as follows:
+
+	      \begin{enumerate}
+		      \item Sockets: a vector of SocketData pointers controlled by either NetworkManager or a detached thread (one/Socket).
+		      \item numOfElem: an unsigned int for the number of current sockets.
+		      \item 
+	      \end{enumerate}
+
+	\item \textbf{Constructor}
+
+	      The Constructor will likely have only three implementations with some mandatory and some nonmandatory elements (in the form of an overloaded Constructor). These will be as follows:
+
+	      \begin{enumerate}
+		      \item A basic constructor requiring a Port, max connection limit (or zero for no limit)*, boolean flag for either [detached multithreaded/sequential balanced] socket handling.
+		            *if >1 connections it will use the Shared Port functionality with a count of the number of active connections within that sockets class.
+
+		      \item A constructor with an input of SocketData, which will be a struct containing the same previously declared data (this will also be created from the previous constructor when stored within the NetworkManager).
+		      \item A more complex constructor of an array for SocketData for systems with multiple open sockets each of which have different settings.
+	      \end{enumerate}
+
+	\item
+\end{enumerate}
 \end{document}
