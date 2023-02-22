@@ -1,0 +1,8 @@
+Requirement Type [USER/FUNC/NFUNC/GOAL]	Requirement code [NAME_Z_Y-Z]	Requirement severity[E/H/M/L]	Requirement State [UNIMP/DESN/INDEV/DONE]	Date Created [yyyy/mm/dd]	Maintainer [last_first/git-user]	Date Modified [yyyy/mm/dd]	Description
+USER	00_0001	M	UNIMP	2022/12/15	Sasso_Anthony-AnthonySasso2001	N/A	The Documentation will consist of a public wiki, readable comments in headers, pdf files in the documentation repository, and multiple README files on subfolders with unclear functions.
+USER	00_0002	M	UNIMP	2033/12/15	Sasso_Anthony-AnthonySasso2001	N/A	The classes will be as generic as possible to avoid needing overrides or overloads but with the option to do so when needed.
+FUNC	01_0001	H	UNIMP	2022/12/14	Sasso_Anthony-AnthonySasso2001	N/A	The API will utilize a NetworkManager to control connections with a Socket class to encapsulate sockets and a Packet class to control packet data.
+FUNC	01_0002	H	UNIMP	2022/12/14	Sasso_Anthony-AnthonySasso2001	N/A	The NetworkManager will contain an array of Sockets with data stored inside with a SocketData object.
+FUNC	01_0003	H	UNIMP	2022/12/14	Sasso_Anthony-AnthonySasso2001	N/A	The Packet class with have HeaderData, DataBuffer, TailData, & CheckValue objects as described in the ClassDesign folder.
+FUNC	01_0004	H	UNIMP	2022/12/14	Sasso_Anthony-AnthonySasso2001	N/A	The DataBuffer class will have struct/buffer constructor, element constructor, destructor, Serialize, & Deserialize functions.
+FUNC	01_0005	H	UNIMP	2022/12/14	Sasso_Anthony-AnthonySasso2001	N/A	All classes within the Packet class will contain a "getValue" function to be used in the Packet's serialize/deserialize function.

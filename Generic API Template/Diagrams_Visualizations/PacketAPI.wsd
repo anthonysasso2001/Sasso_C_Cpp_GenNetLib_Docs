@@ -1,0 +1,106 @@
+@startuml SassoGNL Packet API
+title SassoGNL Packet API
+!theme vibrant
+skinparam linetype polyline
+
+interface Packet {
+    HeaderData: HeaderData
+    DataBuffer: DataBuffer
+    TailData: TailData
+    CheckValue: CheckValue
+    SizeLimit: SizeLimit
+}
+
+enum netFmt{
+    +IPv4
+    +IPv6
+}
+
+struct HeaderDataStruct{
+    netFmt: netFmt
+    sendIP: sockaddr_storage
+    recvIP: sockaddr_storage
+    commPort: unsigned short
+    dataSize: size_t
+    tailSize: size_t
+    checkValSize: size_t
+    dataPos: unsigned short
+    flagBArrSize: unsigned short
+    flagBArr: bitset<flagBArrSize> [unsigned long]
+}
+
+HeaderDataStruct *-d- netFmt
+HeaderDataStruct <|-d- std::bitset
+
+class HeaderData {
+    -data: HeaderDataStruct
+
+    +getMaxSize()
+}
+HeaderData *-- HeaderDataStruct
+
+interface DataBuffer {
+    +getMaxSize()
+}
+interface TailData {
+    +getMaxSize()
+}
+interface CheckValue {
+    +getMaxSize()
+}
+class SizeLimit {
+    +getMaxSize()
+}
+
+Packet o-d- HeaderData
+Packet o-d- DataBuffer
+Packet o-d- TailData
+Packet o-d- CheckValue
+Packet o-d- SizeLimit
+
+' newpage
+
+' interface Packet
+
+' class HeaderData
+' abstract class DataBuffer
+' abstract class TailData
+' abstract class CheckValue
+' class SizeLimit
+
+
+class ExPacket {
+    -DataBuffer: ExDataBuffer
+    -TailData: ExTailData
+    -CheckValue: ExCheckValue
+
+    +Serialize(buffLen: size_t&): serializedBuff: char*
+    +Deserialize(inputBuff: char*, buffLen: size_t): deserializedBuf: ExPacket
+}
+Packet <|.d. ExPacket: implements
+
+class ExDataBuffer{
+    -otherVars: type
+    +otherFuncs(): type
+}
+DataBuffer <|.d. ExDataBuffer: implements
+
+class ExTailData{
+    -otherVars: type
+    +Start(): Bool
+    +Encode(buffLen: size_t&): encodedBuff: char*
+    +Decode(encodedBuff:char*, buffLen: size_t&): decodedBuff: char*
+}
+TailData  <|.d. ExTailData: implements
+
+class ExCheckValue{
+    -otherVars: type
+    +otherFuncs(): type
+}
+ CheckValue <|.d. ExCheckValue: implements
+
+ExPacket o-d- ExDataBuffer
+ExPacket o-d- ExTailData
+ExPacket o-d- ExCheckValue
+
+@enduml

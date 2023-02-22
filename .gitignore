@@ -2,7 +2,7 @@
 build/*
 *.code-workspace
 .vscode/settings.json
-
+.PlantUML/*
 # LaTex / Tex gitignore
 README.pdf
 

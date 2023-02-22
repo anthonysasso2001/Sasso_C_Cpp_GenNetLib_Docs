@@ -18,3 +18,9 @@ flagBArr
 tailSize
 checkValSize
 dataPos
+FUNC
+NFUN
+PREQ
+netFmt
+DataHandler
+sockaddrstorage

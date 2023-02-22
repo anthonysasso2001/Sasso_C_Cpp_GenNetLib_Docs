@@ -17,7 +17,6 @@
 \fancyfoot[R]{\thepage}
 \fancyfoot[C]{\textbf{Documentation licensed under CC-BY-4.0, code \& software examples licensed under GNU GPLv3.}}
 
-
 %   Allows me to use hyperlinks for table of contents etc.
 \usepackage{hyperref}
 \usepackage{xcolor}
@@ -66,14 +65,14 @@
 \setcounter {secnumdepth}{0}
 
 %   Document Title & author
-\title      {\Huge Sasso\_C\_Cpp\_GenNetLib Documentation}
+\title      {\Huge Project Requirements}
 \author     {By: Anthony Sasso}
 
 %   updates date for each compile, that way this + versioning tells reader which they are reading?
 \date       {\today}
 
 %   no indents for paragraphs (change depending on doc type)
-\setlength  {\parindent}    {0pt}
+% \setlength  {\parindent}    {0pt}
 
 %   custom commands / formatting shortcuts
 %   combine bold & italic
@@ -94,31 +93,16 @@
 
 \newpage
 \section{Introduction}
-Separate documentations for Sasso\_C\_Cpp\_GenNetLib intended to be included as a submodule or similar to help segregate the code better.
+This is a PDF translation for the .csv requirements matrix, to assist in readability and more in depth written justifications.
 
-\section{Getting Started}
-\subsection{Software Dependencies}
-\begin{enumerate}
-    \item Ensure a Text editor like LaTeX (pdfLaTex) or LibreOffice (with pdfLaTeX export), as well as PlantUML or Inkscape to allow a unified, accessible format for the documentation Source.
-\end{enumerate}
+For the four types of requirements they will have naming schemes as follows: NAME\_ZZ\_YYYY(-XX) where Z denotes the major requirement category, Y the individual requirement ID, and X an optional sub-requirement specification (such as having a USER\_01\_0001, USER\_01\_0001-A, \& USER\_01\_0001-B). The use of sub-requirements values can only be done in addition to a standard requirement (so you may not just use -A and -B without the generic 0001 with the previous example).
 
-\section{Build \& Test}
-\begin{enumerate}
-    \item Download / Clone Target Branch (by default would recommend the latest one).
-    \item Modify the appropriate documentation file, adding separate documentation as needed.
-    \item Review Spelling, format, (if applicable) convert to a PDF, SVG, or PNG version.
-    \item Commit code according to contribute steps below.
-\end{enumerate}
+\section{User Requirements ``USER''}
 
-*Please note all documentation should include the footer \textbf{``Documentation licensed under CC-BY-4.0, code \& software examples licensed under GNU GPLv3.''} for clarification, in the case of visualizations this may be included by a floating box in the corner of the display. Easiest way for TeX documents is to copy this README's code from \% footer, to end of \textbackslash{}fancyfoot[C] (lines 10-18).
+\section{Functional Requirements ``FUNC''}
 
-\section{Contribute!}
-To Contribute to the project follow these rules:
-\begin{itemize}
-    \item First create an issue / feature request notifying any changes that are wanted.
-    \item Wait to hear the initial response / accepting of that issue before you begin coding.
-    \item Fork or Branch (dependent on scope, membership in core development team, etc.) the repo and code any necessary fixed to fulfill this new feature / fix the bug.
-    \item Issue a pull request back to the main repo with your latest released version and attach a text file or description within the pull request detailing your changes, additions, considerations with this pull request. In addition, follow the ``LatexToMarkdownNoted.md'' within the ``.README'' Source folder to update the README listing any necessary changes, and have this as your final commit before the pull request.
-\end{itemize}
+\section{Non-Functional Requirements ``NFUN''}
+
+\section{Goals \& Requirements Under Review ``GOAL''/``PREQ''}
 
 \end{document}
